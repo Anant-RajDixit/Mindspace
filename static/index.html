@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mindspace · Understand your habits. Find your balance.</title>
+  <meta name="description" content="Mindspace predicts a Mental Health Score from your digital habits, sleep and activity using a tuned XGBoost regression model. Not a medical tool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <a class="skip" href="#assessment">Skip to the assessment</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Main">
+      <a href="#top" class="brand">Mindspace</a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#responsible">Responsible use</a>
+        <a href="#assessment" class="btn btn-primary btn-small">Start</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">Digital habit awareness</p>
+      <h1>Understand your habits.<br>Find your balance.</h1>
+      <p class="lead">Answer a few questions about your screen time, sleep and daily routine, and see the Mental Health Score our trained regression model predicts for similar students.</p>
+      <a href="#assessment" class="btn btn-primary btn-large">Start the assessment</a>
+      <p class="fine">Takes about a minute. No name or email needed.</p>
+    </section>
+
+    <section id="how" class="section">
+      <h2>How it works</h2>
+      <div class="grid3">
+        <article class="tile tile-sage"><span class="num">1</span><h3>Answer</h3><p>A short guided form covering you, your digital habits and your daily rhythm.</p></article>
+        <article class="tile tile-lavender"><span class="num">2</span><h3>Predict</h3><p>Your answers are sent to a tuned XGBoost regression pipeline trained on 5,000 student records.</p></article>
+        <article class="tile tile-peach"><span class="num">3</span><h3>Explore</h3><p>See the predicted score, where it sits in the training data's range, and your own habits in charts.</p></article>
+      </div>
+    </section>
+
+    <section id="assessment" class="section" aria-labelledby="assess-title">
+      <h2 id="assess-title">Habit assessment</h2>
+
+      <!-- Form view -->
+      <div id="form-view">
+        <p id="step-label" class="step-label" aria-live="polite"></p>
+        <div class="progress" role="progressbar" aria-label="Assessment progress" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><div id="progress-bar"></div></div>
+        <div class="card">
+          <h3 id="step-title"></h3>
+          <p id="step-blurb" class="muted"></p>
+          <div id="step-body"></div>
+          <p id="form-error" class="alert" role="alert" hidden></p>
+          <div class="actions">
+            <button id="back-btn" class="btn btn-ghost" type="button">Back</button>
+            <button id="next-btn" class="btn btn-primary" type="button">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result view -->
+      <div id="result-view" hidden>
+        <div class="card result-card">
+          <p class="eyebrow">Predicted Mental Health Score</p>
+          <p class="score" id="score-value" aria-live="polite">–</p>
+          <div class="gauge" role="img" aria-label="Where the predicted score sits within the range of scores in the training data">
+            <div class="gauge-track"><div class="gauge-marker" id="gauge-marker"></div></div>
+            <div class="gauge-ends"><span>3.6</span><span>Range of scores in the training data</span><span>9.4</span></div>
+          </div>
+          <p class="muted small">The model's raw output for the answers you gave. In the training data, higher scores went along with lower self-reported stress levels. This is a statistical pattern, not a diagnosis.</p>
+        </div>
+
+        <div class="card">
+          <h3>Your daily habits</h3>
+          <p class="muted small">Your submitted values. The line marks the average in the training data.</p>
+          <div id="habit-bars"></div>
+        </div>
+
+        <div class="card">
+          <h3>Your answers</h3>
+          <dl id="answers" class="answers"></dl>
+        </div>
+
+        <div class="card tile-lavender">
+          <h3>General wellness ideas</h3>
+          <p class="muted small">General suggestions. They are not produced by the model and are not based on your result.</p>
+          <ul class="ideas">
+            <li>A regular wind-down routine before bed, such as screen-free time, can make evenings calmer.</li>
+            <li>Short breaks away from your screen during the day give you a chance to reset.</li>
+            <li>Light movement such as a walk is an easy way to add activity to your day.</li>
+            <li>If you are struggling, talking to someone you trust or a qualified professional can help.</li>
+          </ul>
+        </div>
+
+        <div class="actions center"><button id="edit-btn" class="btn btn-primary" type="button">Edit answers and rerun</button></div>
+      </div>
+    </section>
+
+    <section id="responsible" class="section" aria-labelledby="resp-title">
+      <h2 id="resp-title">Responsible use</h2>
+      <div class="grid2">
+        <article class="card"><h3>Purpose</h3><p>Mindspace is an educational project that shows a machine-learning model in action next to simple views of your own inputs.</p></article>
+        <article class="card"><h3>Not a medical tool</h3><p>It does not diagnose, treat or assess any health condition, and should not be used to make health decisions. If you are worried about your wellbeing, please speak with a qualified professional.</p></article>
+        <article class="card"><h3>Model limitations</h3>
+          <p>The model predicts <strong>Mental_Health_Score</strong> from 12 inputs, including self-reported stress level. It was trained on 4,998 student records aged 18 to 24, so inputs are limited to the ranges it has seen. It describes patterns in that dataset. It does not show that any habit causes a score, and it may not apply to you.</p>
+          <p class="muted small">Held-out test results (25% random split): R² 0.891, MAE 0.325, RMSE 0.437. These are measured on the same dataset, so they do not guarantee accuracy for real people. Countries outside the 10 most common in the data are grouped as "Other".</p>
+        </article>
+        <article class="card"><h3>Privacy</h3><p>Your answers are sent to the server only to compute the prediction. This app does not ask for your name or contact details and does not save your answers.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Mindspace is an educational ML demo, not a medical or diagnostic tool.</p>
+    <p><a href="#how">How it works</a> · <a href="#responsible">Responsible use</a> · <a href="/docs">API docs</a> · <a href="/health">Status</a></p>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
